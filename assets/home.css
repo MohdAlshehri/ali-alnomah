@@ -552,3 +552,11 @@
 .g-site .frame .cv{min-height:0;height:100%;align-items:end}
 .g-site .frame .cv img{max-height:100%}
 .foot-bot .credit{max-width:none;margin:0 auto}
+/* توزيع متوازن للمجموعات: ٥ ← ٣+٢، و٣/٦ ← ثلاثة في الصف (على الشاشات العريضة) */
+@media (min-width:1100px){
+  .colls.grps.g5{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .colls.grps.g5 .grp{grid-column:span 2}
+  .colls.grps.g5 .grp:nth-child(4),.colls.grps.g5 .grp:nth-child(5){grid-column:span 3}
+  .colls.grps.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (min-width:761px) and (max-width:1099px){.colls.grps.g5 .grp:nth-child(5){grid-column:1/-1}}
