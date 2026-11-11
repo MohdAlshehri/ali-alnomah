@@ -91,13 +91,25 @@
       "id": "b02",
       "title": "خصائص التراكيب في آيات العقيدة وأثرها في تقرير المعنى",
       "file": "books/book-02.pdf",
-      "cover": "covers/book-02.jpg",
+      "cover": "covers/book-02.jpg?v=2",
       "pages": 513,
       "date": "2026-11-11",
       "added": "2026-11-11",
       "category": "البلاغة",
       "toc": 503,
-      "pageOffset": 1
+      "pageOffset": 1,
+      "crop": [
+        71,
+        93,
+        494,
+        765
+      ],
+      "cropCover": [
+        114,
+        110,
+        482,
+        695
+      ]
     }
   ]
 }

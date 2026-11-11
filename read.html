@@ -12,8 +12,8 @@
 <meta property="og:site_name" content="مؤلفات الدكتور علي بن محمد آل نومة القحطاني">
 <meta property="og:title" content="المكتبة العلمية — مؤلفات الدكتور علي بن محمد آل نومة القحطاني">
 <meta property="og:description" content="مكتبة رقمية مجانية لـمؤلفات الدكتور علي بن محمد آل نومة القحطاني: كتبه وأبحاثه ورسائله في العلوم الشرعية والعربية والسيرة والدعوة، تقرؤها كما طُبعت ومن أي جهاز.، تُقرأ بتقليب الصفحات على الجوال والكمبيوتر.">
-<meta property="og:image" content="https://MohdAlshehri.github.io/ali-alnomah/assets/og.jpg">
-<meta property="og:image:secure_url" content="https://MohdAlshehri.github.io/ali-alnomah/assets/og.jpg">
+<meta property="og:image" content="https://mohdalshehri.github.io/ali-alnomah/assets/og.jpg">
+<meta property="og:image:secure_url" content="https://mohdalshehri.github.io/ali-alnomah/assets/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="المكتبة العلمية — مؤلفات الدكتور علي بن محمد آل نومة القحطاني">
 <meta name="twitter:description" content="مكتبة رقمية مجانية لـمؤلفات الدكتور علي بن محمد آل نومة القحطاني: كتبه وأبحاثه ورسائله في العلوم الشرعية والعربية والسيرة والدعوة، تقرؤها كما طُبعت ومن أي جهاز.، تُقرأ بتقليب الصفحات على الجوال والكمبيوتر.">
-<meta name="twitter:image" content="https://MohdAlshehri.github.io/ali-alnomah/assets/og.jpg">
+<meta name="twitter:image" content="https://mohdalshehri.github.io/ali-alnomah/assets/og.jpg">
 <!-- SHARE:END -->
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
@@ -84,8 +84,8 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>
     <span class="badge" id="bmCount" hidden></span>
   </button>
-  <button class="ibtn" id="tocBtn" title="الفهرس" aria-label="الفهرس" hidden>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C6.4 4.4 9 4.6 12 6.4v13c-3-1.8-5.6-2-8-.9z"/><path d="M20 5.5c-2.4-1.1-5-.9-8 .9v13c3-1.8 5.6-2 8-.9z"/><path d="M14.5 10h3M14.5 13h3M6.5 10h3M6.5 13h3"/></svg>
+  <button class="ibtn toc-btn" id="tocBtn" title="الانتقال إلى فهرس الكتاب" aria-label="الفهرس" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C6.4 4.4 9 4.6 12 6.4v13c-3-1.8-5.6-2-8-.9z"/><path d="M20 5.5c-2.4-1.1-5-.9-8 .9v13c3-1.8 5.6-2 8-.9z"/><path d="M14.5 10h3M14.5 13h3M6.5 10h3M6.5 13h3"/></svg><span>الفهرس</span>
   </button>
   <div class="pager">
     <label class="sr" for="slider">الانتقال إلى صفحة</label>
@@ -220,7 +220,21 @@ const idxOf = (p) => T - p;         // ترتيب معكوس ليكون التق
 const pageOf = (i) => T - i;
 const first = await pdf.getPage(1);
 const vp1 = first.getViewport({ scale: 1 });
-const RATIO = vp1.width / vp1.height;
+// قصّ الهوامش البيضاء عند العرض فقط (book.crop = [x0,y0,x1,y1] بنقاط PDF من أعلى اليسار، يُحسب أثناء التجهيز ليشمل كل محتوى الصفحات). الملف نفسه لا يتغير
+const CROP = Array.isArray(book.crop) && book.crop.length === 4 && book.crop[2] > book.crop[0] && book.crop[3] > book.crop[1] ? book.crop.map(Number) : null;
+const RATIO = CROP ? (CROP[2] - CROP[0]) / (CROP[3] - CROP[1]) : vp1.width / vp1.height;
+// يرسم الصفحة p داخل لوحة w×h: مقصوصة الهوامش، والغلاف (ص١) كاملاً في الوسط
+async function drawPage(page, p, ctx, w, h) {
+  const v0 = page.getViewport({ scale: 1 });
+  if (!CROP) { await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: w / v0.width }) }).promise; return; }
+  if (p === 1) { // الغلاف: يُعرض كاملاً (أو مقصوصاً بـ book.cropCover) في وسط المساحة
+    const C = Array.isArray(book.cropCover) && book.cropCover.length === 4 ? book.cropCover.map(Number) : [0, 0, v0.width, v0.height];
+    const cw = C[2] - C[0], ch = C[3] - C[1], s = Math.min(w / cw, h / ch);
+    await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: s }), transform: [1, 0, 0, 1, (w - cw * s) / 2 - C[0] * s, (h - ch * s) / 2 - C[1] * s] }).promise; return;
+  }
+  const s = w / (CROP[2] - CROP[0]);
+  await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: s }), transform: [1, 0, 0, 1, -CROP[0] * s, -CROP[1] * s] }).promise;
+}
 
 const OFF = Math.max(0, Math.min(N - 1, parseInt(book.pageOffset, 10) || 0)); // فرق ترقيم الكتاب المطبوع عن صفحات الملف
 let retP = 0, landP = 0; // مكان القارئ قبل آخر قفزة كبيرة (فهرس، شريط، رقم صفحة، علامة)
@@ -273,14 +287,12 @@ async function pump() {
     const target = Math.round(pageW * DPR);
     try {
       const page = await pdf.getPage(p);
-      const vp0 = page.getViewport({ scale: 1 });
-      const vp = page.getViewport({ scale: target / vp0.width });
       const c = document.createElement("canvas");
-      c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+      c.width = target; c.height = Math.round(target / RATIO);
       c.dir = "ltr";
       const ctx = c.getContext("2d", { alpha: false }); ctx.direction = "ltr";
       ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
-      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      await drawPage(page, p, ctx, c.width, c.height);
       drawAnn(ctx, p, c.width, c.height);
       const el = els[idxOf(p)];
       el.querySelectorAll("canvas,.pg-ph").forEach((n) => n.remove());
@@ -547,6 +559,8 @@ async function buildOutline() {
     await walk(items, 0); outline = out.slice(0, 400);
   } catch (e) { outline = []; }
   $("tocBtn").hidden = !(TOC || outline.length);
+  // تعريف أول مرة: نلفت نظر القارئ لزر الفهرس مرة واحدة فقط
+  if (!$("tocBtn").hidden && !store.get("tocSeen")) { store.set("tocSeen", "1"); $("tocBtn").classList.add("glow"); setTimeout(() => toast("📑 لهذا الكتاب فهرس: اضغط «الفهرس» للانتقال إليه"), 1400); setTimeout(() => $("tocBtn").classList.remove("glow"), 6000); }
 }
 buildOutline();
 $("tocBtn").onclick = () => {
@@ -725,9 +739,9 @@ async function loadAnnPage(p) {
   annW = Math.floor(Math.min(maxW, maxH * RATIO)); annH = Math.floor(annW / RATIO);
   const sh = $("annSheet"); sh.style.width = annW + "px"; sh.style.height = annH + "px";
   [base, ink].forEach((c) => { c.width = Math.round(annW * DPR); c.height = Math.round(annH * DPR); });
-  const page = await pdf.getPage(p), vp0 = page.getViewport({ scale: 1 }), vp = page.getViewport({ scale: base.width / vp0.width });
+  const page = await pdf.getPage(p);
   const bctx = base.getContext("2d", { alpha: false }); bctx.direction = "ltr"; bctx.fillStyle = "#fff"; bctx.fillRect(0, 0, base.width, base.height);
-  await page.render({ canvasContext: bctx, viewport: vp }).promise;
+  await drawPage(page, p, bctx, base.width, base.height);
   redrawInk();
 }
 function openAnn() {
@@ -954,14 +968,14 @@ async function wsDraw(p) {
   const gre = new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-arab", { day: "numeric", month: "long", year: "numeric" }).format(now).replace(/\s*م\s*$/, "") + " م";
   x.font = '500 34px "Plex", sans-serif'; x.fillStyle = wsA(t.fg, 0.75); x.fillText(gre, CX, 348);
   // الوسط: الصفحة بدقة عالية مع كتابات القارئ
-  const page = await pdf.getPage(p), vp0 = page.getViewport({ scale: 1 }), r0 = vp0.width / vp0.height;
+  const page = await pdf.getPage(p), r0 = RATIO;
   const top = 420, bot = 1460, maxW = 860, maxH = bot - top;
   let pw = maxW, ph = pw / r0; if (ph > maxH) { ph = maxH; pw = ph * r0; }
   const px = Math.round(CX - pw / 2), py = Math.round(top + (maxH - ph) / 2);
-  const off = document.createElement("canvas"), sc = Math.min(pw * 1.6, 2200) / vp0.width; // أدق من مقاس الرسم لتبقى الحروف حادة
-  const vp = page.getViewport({ scale: sc }); off.width = Math.round(vp.width); off.height = Math.round(vp.height); off.dir = "ltr";
+  const off = document.createElement("canvas"), ow = Math.round(Math.min(pw * 1.6, 2200)); // أدق من مقاس الرسم لتبقى الحروف حادة
+  off.width = ow; off.height = Math.round(ow / r0); off.dir = "ltr";
   const o = off.getContext("2d", { alpha: false }); o.direction = "ltr"; o.fillStyle = "#fff"; o.fillRect(0, 0, off.width, off.height);
-  await page.render({ canvasContext: o, viewport: vp }).promise;
+  await drawPage(page, p, o, off.width, off.height);
   drawAnn(o, p, off.width, off.height);
   x.save(); x.strokeStyle = wsA(t.ac, 0.55); x.lineWidth = 2; x.strokeRect(px - 16, py - 16, pw + 32, ph + 32); x.restore();
   x.save(); x.shadowColor = "rgba(0,0,0,.38)"; x.shadowBlur = 48; x.shadowOffsetY = 18; x.fillStyle = "#fff"; x.fillRect(px, py, pw, ph); x.restore();
@@ -1057,16 +1071,13 @@ async function drawZoom() {
   const w = Math.round(fitW * zLevel);
   for (const p of zPages) {
     const page = await pdf.getPage(p);
-    const vp0 = page.getViewport({ scale: 1 });
-    const scale = (w * DPR) / vp0.width;
-    const vp = page.getViewport({ scale });
     const c = document.createElement("canvas");
-    c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+    c.width = Math.round(w * DPR); c.height = Math.round(w * DPR / RATIO);
     c.style.width = w + "px"; c.style.height = Math.round(w / RATIO) + "px";
     c.dir = "ltr";
     const zctx = c.getContext("2d", { alpha: false }); zctx.direction = "ltr";
     zctx.fillStyle = "#fff"; zctx.fillRect(0, 0, c.width, c.height);
-    await page.render({ canvasContext: zctx, viewport: vp }).promise;
+    await drawPage(page, p, zctx, c.width, c.height);
     drawAnn(zctx, p, c.width, c.height);
     if (token !== zToken) return;
     box.appendChild(c);
