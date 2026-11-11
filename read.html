@@ -29,7 +29,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23164e3b'/%3E%3Cpath d='M12 20c7-3 14-2 20 2v26c-6-4-13-5-20-2zM52 20c-7-3-14-2-20 2v26c6-4 13-5 20-2z' fill='%23c6a15b'/%3E%3Cpath d='M32 10l2.2 4.4 4.8.7-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8-3.5-3.4 4.8-.7z' fill='%23f7f3e8'/%3E%3C/svg%3E">
 <!-- THEME:START (يُولَّد تلقائياً: python3 tools/configure.py) --><style id="lib-theme">:root:root{--t-primary:#17365d;--t-primary-rgb:23 54 93;--t-primary-l:#254267;--t-primary-2:#112946;--t-primary-2-rgb:17 41 70;--t-primary-d:#0f233c;--t-primary-d-rgb:15 35 60;--t-primary-dd:#0b1a2d;--t-primary-dd-rgb:11 26 45;--t-stage:#091625;--t-stage-rgb:9 22 37;--t-sheet:#0e1d2f;--t-zoom:#07111e;--t-annbar-rgb:12 27 47;--t-accent:#d9b978;--t-accent-rgb:217 185 120;--t-accent-2-rgb:217 185 120;--t-accent-m:#b89d66;--t-accent-text:#766541;--t-bg:#f7f3e8;--t-bg-rgb:247 243 232;--t-bg-2:#f2e9d4;--t-card:#fdfbf8;--t-soft:#f3ebd9;--t-line:#e8dfcb;--t-line-2:#e7dfcb;--t-ink:#283d57;--t-ink-rgb:40 61 87;--t-muted:#667482;--t-muted-2:#6c7987;--t-on-dark-2:#f2e9d4;--t-on-dark-3:#f4eddd;--t-placeholder:#858f98;--t-chip:#efece2;--t-chip-h:#f1e7d2;--t-tint:#f2e9d4;--t-tint-2:#f6f0e2;--t-pg:#fbf8f2;--t-pg-2:#f4eddd;--t-pg-ink:#c7b894;--t-fan:#0d1e33;--t-line-h:#dcceaf;--t-line-h2:#ddd0b2;--t-frame:#f0eada;--t-frame-2:#ebe2ce;--t-frame-h:#eae1cc;--t-frame-h2:#e6dac0;--t-dot:#b8b09a;--t-highlight:#d9b978;--t-pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23d9b978' stroke-width='.7' stroke-opacity='.22'%3E%3Cpath d='M42 18l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='27' y='27' width='30' height='30' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='5'/%3E%3Cpath d='M0 0l12 12M84 0L72 12M0 84l12-12M84 84L72 72'/%3E%3C/g%3E%3C/svg%3E")}</style><!-- THEME:END -->
 <script>try{var _t=localStorage.getItem("lib-theme:"+location.pathname.replace(/[^/]*$/,""));if(_t){var _s=document.getElementById("lib-theme")||document.createElement("style");_s.id="lib-theme";_s.textContent=_t;if(!_s.parentNode)document.head.appendChild(_s)}}catch(e){}</script>
-<link rel="stylesheet" href="assets/style.css?v=41">
+<link rel="stylesheet" href="assets/style.css?v=42">
 </head>
 <body class="reader">
 <header class="r-top">
@@ -84,6 +84,9 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>
     <span class="badge" id="bmCount" hidden></span>
   </button>
+  <button class="ibtn toc-btn pages-btn" id="pagesBtn" title="عرض مصغرات كل الصفحات للتنقل السريع" aria-label="الصفحات" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>الصفحات</span>
+  </button>
   <button class="ibtn toc-btn" id="tocBtn" title="الانتقال إلى فهرس الكتاب" aria-label="الفهرس" hidden>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C6.4 4.4 9 4.6 12 6.4v13c-3-1.8-5.6-2-8-.9z"/><path d="M20 5.5c-2.4-1.1-5-.9-8 .9v13c3-1.8 5.6-2 8-.9z"/><path d="M14.5 10h3M14.5 13h3M6.5 10h3M6.5 13h3"/></svg><span>الفهرس</span>
   </button>
@@ -121,6 +124,17 @@
   <div class="sheet-head"><b>📑 الفهرس</b><button class="ibtn sheet-x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <ul class="bm-list toc-list" id="tocList"></ul>
 </div>
+<div class="pg-panel" id="pgPanel" role="dialog" aria-modal="true" aria-label="صفحات الكتاب" hidden>
+  <div class="pg-box">
+    <div class="pg-head">
+      <b>صفحات الكتاب</b><span class="pg-sub" id="pgSub"></span>
+      <button type="button" class="pg-cur" id="pgCur">الصفحة الحالية</button>
+      <button class="ibtn pg-x" id="pgX" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="pg-grid" id="pgGrid"></div>
+  </div>
+</div>
+<div class="scrub" id="scrub" hidden aria-hidden="true"><div class="scrub-img" id="scrubImg"></div><b id="scrubNum"></b></div>
 <div class="back-chip" id="backChip" hidden><button type="button" id="backGo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg><span id="backTxt"></span></button><button type="button" class="back-x" id="backX" aria-label="إخفاء زر العودة">✕</button></div>
 <div class="sheet" id="shareSheet" role="dialog" aria-label="مشاركة الصفحة" hidden>
   <div class="sheet-head"><b>📤 مشاركة الصفحة</b><button class="ibtn sheet-x" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
@@ -616,6 +630,79 @@ $("fsBtn").onclick = () => {
   if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
   else { const el = d.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen || (() => toast("ملء الشاشة غير مدعوم في هذا المتصفح"))).call(el); }
 };
+
+// ===== مصغرات الصفحات: لوحة «الصفحات» + معاينة أثناء سحب الشريط (v42) =====
+const thumbs = new Map(), thumbWait = new Map(); let thumbBusy = 0; const thumbQ = [];
+const thumbLabel = (p) => p <= OFF ? (p === 1 ? "الغلاف" : "–") : pn(p);
+function thumbURL(p) { // صورة مصغرة JPG للصفحة (تُرسم مرة وتُحفظ)
+  if (thumbs.has(p)) return Promise.resolve(thumbs.get(p));
+  if (thumbWait.has(p)) return thumbWait.get(p);
+  const pr = new Promise((res) => thumbQ.push({ p, res })); thumbWait.set(p, pr); pumpThumbs(); return pr;
+}
+async function pumpThumbs() {
+  while (thumbBusy < 2 && thumbQ.length) {
+    const { p, res } = thumbQ.pop(); thumbBusy++; // الأحدث أولاً: ما يراه القارئ الآن
+    (async () => {
+      try {
+        const page = await pdf.getPage(p), c = document.createElement("canvas");
+        c.width = 240; c.height = Math.round(240 / RATIO);
+        const ctx = c.getContext("2d", { alpha: false }); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+        await drawPage(page, p, ctx, c.width, c.height);
+        const blob = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.72));
+        const u = URL.createObjectURL(blob); thumbs.set(p, u); res(u);
+      } catch (e) { res(""); }
+      thumbWait.delete(p); thumbBusy--; pumpThumbs();
+    })();
+  }
+}
+let pgBuilt = false, pgIO = null;
+function buildPages() {
+  pgBuilt = true; const g = $("pgGrid"); g.style.setProperty("--pr", RATIO);
+  pgIO = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return; const b = e.target; pgIO.unobserve(b);
+    thumbURL(+b.dataset.p).then((u) => { if (u) { const im = new Image(); im.alt = ""; im.src = u; b.querySelector(".pg-img").appendChild(im); } });
+  }), { root: g, rootMargin: "400px 0px" });
+  const frag = document.createDocumentFragment();
+  for (let p = 1; p <= N; p++) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "pg-th"; b.dataset.p = p;
+    b.setAttribute("aria-label", "الصفحة " + thumbLabel(p));
+    const im = document.createElement("span"); im.className = "pg-img"; const n = document.createElement("span"); n.className = "pg-n"; n.textContent = thumbLabel(p);
+    b.append(im, n); if (p === TOC) { const t = document.createElement("span"); t.className = "pg-tag"; t.textContent = "الفهرس"; b.appendChild(t); }
+    b.onclick = () => { closePages(); goTo(p); };
+    frag.appendChild(b); pgIO.observe(b);
+  }
+  g.appendChild(frag);
+}
+function paintPages() {
+  const v = visiblePages(), bm = new Set(getBm().map((x) => x.p));
+  $("pgGrid").querySelectorAll(".pg-th").forEach((b) => { const p = +b.dataset.p; b.classList.toggle("on", v.includes(p)); b.classList.toggle("bm", bm.has(p)); if (v.includes(p)) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  $("pgSub").textContent = ar(N - OFF) + " صفحة";
+}
+function scrollToCur(smooth) { const b = $("pgGrid").querySelector(".pg-th.on"); if (b) b.scrollIntoView({ block: "center", behavior: smooth ? "smooth" : "auto" }); }
+function openPages() {
+  closeSheets(); if (!pgBuilt) buildPages(); paintPages();
+  $("pgPanel").hidden = false; document.body.classList.add("pg-open"); requestAnimationFrame(() => scrollToCur(false)); $("pgX").focus({ preventScroll: true });
+}
+function closePages() { $("pgPanel").hidden = true; document.body.classList.remove("pg-open"); }
+$("pagesBtn").onclick = () => $("pgPanel").hidden ? openPages() : closePages();
+$("pgX").onclick = closePages;
+$("pgCur").onclick = () => scrollToCur(true);
+$("pgPanel").addEventListener("click", (e) => { if (e.target.id === "pgPanel") closePages(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("pgPanel").hidden) { e.stopPropagation(); closePages(); } }, true);
+
+// معاينة أثناء السحب: صورة الصفحة ورقمها فوق مقبض الشريط
+let scrubT = 0;
+function showScrub(p) {
+  const sl = $("slider"), r = sl.getBoundingClientRect(), f = N > 1 ? (p - 1) / (N - 1) : 0;
+  const rtl = getComputedStyle(sl).direction === "rtl", x = rtl ? r.right - f * r.width : r.left + f * r.width;
+  const sc = $("scrub"); sc.hidden = false; $("scrubNum").textContent = thumbLabel(p);
+  const w = sc.offsetWidth; sc.style.left = Math.max(8, Math.min(innerWidth - w - 8, x - w / 2)) + "px"; sc.style.bottom = innerHeight - r.top + 14 + "px";
+  const box = $("scrubImg"); box.style.setProperty("--pr", RATIO); box.dataset.p = p;
+  const set = (u) => { if (box.dataset.p == p) box.style.backgroundImage = u ? "url(" + u + ")" : ""; };
+  if (thumbs.has(p)) set(thumbs.get(p)); else { clearTimeout(scrubT); scrubT = setTimeout(() => thumbURL(p).then(set), 60); }
+}
+$("slider").addEventListener("input", (e) => showScrub(+e.target.value));
+["change", "pointerup", "touchend", "blur"].forEach((ev) => $("slider").addEventListener(ev, () => setTimeout(() => { $("scrub").hidden = true; }, 150)));
 
 // ===== العلامات المرجعية (تُحفظ في جهاز القارئ) =====
 const BMK = "bm:" + book.file;
