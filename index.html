@@ -31,7 +31,7 @@
 <!-- THEME:START (يُولَّد تلقائياً: python3 tools/configure.py) --><style id="lib-theme">:root:root{--t-primary:#17365d;--t-primary-rgb:23 54 93;--t-primary-l:#254267;--t-primary-2:#112946;--t-primary-2-rgb:17 41 70;--t-primary-d:#0f233c;--t-primary-d-rgb:15 35 60;--t-primary-dd:#0b1a2d;--t-primary-dd-rgb:11 26 45;--t-stage:#091625;--t-stage-rgb:9 22 37;--t-sheet:#0e1d2f;--t-zoom:#07111e;--t-annbar-rgb:12 27 47;--t-accent:#d9b978;--t-accent-rgb:217 185 120;--t-accent-2-rgb:217 185 120;--t-accent-m:#b89d66;--t-accent-text:#766541;--t-bg:#f7f3e8;--t-bg-rgb:247 243 232;--t-bg-2:#f2e9d4;--t-card:#fdfbf8;--t-soft:#f3ebd9;--t-line:#e8dfcb;--t-line-2:#e7dfcb;--t-ink:#283d57;--t-ink-rgb:40 61 87;--t-muted:#667482;--t-muted-2:#6c7987;--t-on-dark-2:#f2e9d4;--t-on-dark-3:#f4eddd;--t-placeholder:#858f98;--t-chip:#efece2;--t-chip-h:#f1e7d2;--t-tint:#f2e9d4;--t-tint-2:#f6f0e2;--t-pg:#fbf8f2;--t-pg-2:#f4eddd;--t-pg-ink:#c7b894;--t-fan:#0d1e33;--t-line-h:#dcceaf;--t-line-h2:#ddd0b2;--t-frame:#f0eada;--t-frame-2:#ebe2ce;--t-frame-h:#eae1cc;--t-frame-h2:#e6dac0;--t-dot:#b8b09a;--t-highlight:#d9b978;--t-pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23d9b978' stroke-width='.7' stroke-opacity='.22'%3E%3Cpath d='M42 18l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='27' y='27' width='30' height='30' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='5'/%3E%3Cpath d='M0 0l12 12M84 0L72 12M0 84l12-12M84 84L72 72'/%3E%3C/g%3E%3C/svg%3E")}</style><!-- THEME:END -->
 <script>try{var _t=localStorage.getItem("lib-theme:"+location.pathname.replace(/[^/]*$/,""));if(_t){var _s=document.getElementById("lib-theme")||document.createElement("style");_s.id="lib-theme";_s.textContent=_t;if(!_s.parentNode)document.head.appendChild(_s)}}catch(e){}</script>
 <link rel="stylesheet" href="assets/style.css?v=41">
-<link rel="stylesheet" href="assets/home.css?v=41">
+<link rel="stylesheet" href="assets/home.css?v=42">
 </head>
 <body class="home">
 <div class="datebar" id="today" aria-label="تاريخ اليوم"></div>
@@ -247,11 +247,12 @@
   // ===== المجموعات الرئيسية (site.groups، v40): مجموعة ← تصنيفات ← كتب. بدونها يبقى العرض كما كان =====
   const GROUPS = [];
   if (Array.isArray(site.groups) && site.groups.length) {
-    site.groups.forEach((g) => { if (g && g.name) GROUPS.push({ name: g.name, desc: g.desc || "", icon: g.icon || "", cats: (g.cats || []).filter((c) => inCat(c).length) }); });
+    // كل المجموعات وتصنيفاتها تظهر دائماً حتى لو كانت فارغة (حالة «لا توجد كتب» أنيقة)، والأعداد محسوبة من الكتب الفعلية
+    site.groups.forEach((g) => { if (g && g.name) GROUPS.push({ name: g.name, desc: g.desc || "", icon: g.icon || "", cats: (g.cats || []).filter(Boolean) }); });
     const rest = cats.filter((c) => !GROUPS.some((g) => g.cats.includes(c)));
     if (rest.length) GROUPS.push({ name: "أخرى", desc: "", icon: "book", cats: rest });
-    for (let i = GROUPS.length - 1; i >= 0; i--) if (!GROUPS[i].cats.length) GROUPS.splice(i, 1);
   }
+  const catDesc = (c) => (site.catDesc && site.catDesc[c]) || "";
   const grpOf = (c) => (GROUPS.find((g) => g.cats.includes(c)) || {}).name || "";
   const inGrp = (g) => books.filter((b) => catsOf(b).some((c) => g.cats.includes(c)));
 
@@ -421,7 +422,7 @@
 
   // أزرار التصنيف
   let curCat = "";
-  let gPaint = null;
+  let gPaint = null, catHook = null;
   if (cats.length && !GROUPS.length) {
     const nav = $("cats"); nav.hidden = false;
     const mk = (label, val, n) => {
@@ -451,6 +452,7 @@
     const raw = $("q").value.trim();
     $("resTxt").textContent = [raw ? "عن «" + raw + "»" : "", curCat ? "في «" + (curCat.startsWith("g:") ? curCat.slice(2) : (grpOf(curCat) ? grpOf(curCat) + " ‹ " : "") + curCat) + "»" : ""].filter(Boolean).join(" ");
     $("sForm").classList.toggle("has", !!raw);
+    if (catHook) catHook(n, raw);
   }
   // ترتيب الكتب (لا يغيّر البيانات، فقط طريقة العرض)
   $("sort").addEventListener("change", (e) => {
@@ -499,7 +501,7 @@
       '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M20 4l16 16-16 16L4 20z" fill="none" stroke="#000" stroke-width="1.2"/><circle cx="20" cy="20" r="2.2"/></svg>'
     ].map(enc);
     const sec = $("colls"), list = $("collList"), head = sec.querySelector(".sec-head");
-    sec.hidden = false; sec.classList.add("g-mode");
+    sec.hidden = false; sec.classList.add("g-mode"); document.body.classList.add("g-site");
     const crumb = el("nav", "gnav"); crumb.setAttribute("aria-label", "مسار التصفح"); crumb.hidden = true; head.after(crumb);
     let viewG = null;
     const meta = (n, w) => { const s_ = el("span", "gm"); const b = el("b", "", en(n)); b.dir = "ltr"; s_.append(b, document.createTextNode(" " + plural(n, w))); return s_; };
@@ -513,10 +515,12 @@
         const bk = inGrp(g), b = el("button", "grp"); b.type = "button"; b.dataset.g = g.name; b.style.setProperty("--pat", PATS[i % PATS.length]);
         const ic = el("span", "grp-ic"); ic.innerHTML = icG(g);
         const body = el("span", "grp-body"); body.appendChild(el("h3", "", g.name)); if (g.desc) body.appendChild(el("span", "grp-desc", g.desc));
-        const ft = el("span", "grp-foot"); ft.append(meta(bk.length, "book"), meta(g.cats.length, "cat"));
+        const ft = el("span", "grp-foot");
+        if (bk.length) ft.append(meta(bk.length, "book"), meta(g.cats.length, "cat"));
+        else { b.classList.add("grp-empty"); ft.append(el("span", "gm gm-empty", "لا توجد كتب مضافة حالياً"), meta(g.cats.length, "cat")); }
         const go = el("span", "grp-go"); go.innerHTML = "<span>تصفّح</span>" + arrow; ft.appendChild(go);
         b.append(el("span", "grp-pat"), ic, body, ft);
-        b.setAttribute("aria-label", g.name + " — " + bk.length + " " + plural(bk.length, "book") + "، " + g.cats.length + " " + plural(g.cats.length, "cat"));
+        b.setAttribute("aria-label", g.name + " — " + (bk.length ? bk.length + " " + plural(bk.length, "book") : "لا توجد كتب مضافة حالياً") + "، " + g.cats.length + " " + plural(g.cats.length, "cat"));
         b.onclick = () => nav(g.name, "", "colls");
         list.appendChild(b);
       });
@@ -534,14 +538,18 @@
       const cur = el("span", "gcur"); cur.innerHTML = icG(g); cur.appendChild(el("b", "", g.name)); cur.setAttribute("aria-current", "page");
       crumb.append(bk, el("span", "gsep", "‹"), cur);
       const sub = (cls, val, icon, title, list_, fn) => {
-        const b = el("button", "sub " + cls); b.type = "button"; b.dataset.val = val; b.classList.toggle("on", curCat === val);
+        const b = el("button", "sub " + cls + (list_.length ? "" : " sub-empty")); b.type = "button"; b.dataset.val = val; b.classList.toggle("on", curCat === val);
         const ic = el("span", "sub-ic"); ic.innerHTML = icon; const t = el("span", "sub-t"); t.appendChild(el("h3", "", title));
-        const m = el("span", "sub-m"); m.append(meta(list_.length, "book")); const pg = pagesOf(list_); if (pg) { m.append(el("span", "dot", "•"), meta(pg, "page")); } t.appendChild(m);
+        const m = el("span", "sub-m");
+        if (list_.length) { m.append(meta(list_.length, "book")); const pg = pagesOf(list_); if (pg) { m.append(el("span", "dot", "•"), meta(pg, "page")); } }
+        else m.appendChild(el("span", "gm gm-soon", "لا توجد كتب بعد"));
+        t.appendChild(m);
         const a = el("span", "sub-arr"); a.innerHTML = arrow;
         const cv = el("span", "sub-cv"); list_.filter((x) => x.cover).slice(0, 3).forEach((x) => { const im = new Image(); im.alt = ""; im.loading = "lazy"; im.src = x.cover; cv.appendChild(im); });
         b.append(ic, t, a, cv); b.setAttribute("aria-label", title + " — " + list_.length + " " + plural(list_.length, "book")); b.onclick = fn; list.appendChild(b);
       };
-      sub("sub-all", "g:" + g.name, icG(g), "كل كتب " + g.name, inGrp(g), () => nav(g.name, "*", "lib"));
+      if (inGrp(g).length) sub("sub-all", "g:" + g.name, icG(g), "كل كتب " + g.name, inGrp(g), () => nav(g.name, "*", "lib"));
+      else { const e = el("div", "g-empty"); e.innerHTML = svg(ICONS.book); const t = el("div"); t.append(el("b", "", "لم تُضف كتب لمجموعة «" + g.name + "» بعد"), el("span", "", "ستظهر هنا فور إضافتها بإذن الله، وهذه تصنيفاتها:")); e.appendChild(t); list.appendChild(e); }
       g.cats.forEach((c) => sub("", c, icC(c), c, inCat(c), () => nav(g.name, c, "lib")));
     }
     // شريط التصفية فوق الرف: صف للمجموعات، وصف لتصنيفات المجموعة المختارة
@@ -560,6 +568,46 @@
     // التذييل: المجموعات
     GROUPS.forEach((g) => { const li = el("li"); const a = el("a", "", g.name); a.href = "#g/" + encodeURIComponent(g.name); a.onclick = (e) => { e.preventDefault(); nav(g.name, "", "colls"); }; li.appendChild(a); $("fCats").appendChild(li); });
 
+    // ===== صفحة التصنيف: عنوان ووصف وعدد وبحث داخل التصنيف، ثم شبكة الأغلفة =====
+    const lib = $("library"), ch = el("div", "cat-head"); ch.id = "catHead"; ch.hidden = true; lib.querySelector(".wrap").prepend(ch);
+    let catLabel = "";
+    function catView(g, c) {
+      const G_ = GROUPS.find((x) => x.name === g), all = !c || c === "*";
+      const list_ = all ? inGrp(G_) : inCat(c), title = all ? "كل كتب " + g : c, desc = all ? G_.desc : catDesc(c);
+      catLabel = title; ch.replaceChildren();
+      const cr = el("nav", "cat-crumb"); cr.setAttribute("aria-label", "مسار التصفح");
+      const lk = (t, fn) => { const b = el("button", "", t); b.type = "button"; b.onclick = fn; return b; };
+      cr.append(lk("المجموعات", () => nav("", "", "colls")), el("span", "gsep", "‹"));
+      if (all) cr.appendChild(el("b", "", g)); else cr.append(lk(g, () => nav(g, "", "colls")), el("span", "gsep", "‹"), el("b", "", c));
+      const top = el("div", "cat-top"); const ic = el("span", "cat-ic"); ic.innerHTML = all ? icG(G_) : icC(c);
+      const tx = el("div", "cat-tx"); tx.appendChild(el("h1", "", title)); if (desc) tx.appendChild(el("p", "cat-desc", desc));
+      const mt = el("div", "cat-meta"); mt.id = "catMeta"; tx.appendChild(mt); top.append(ic, tx);
+      const sb = el("label", "cat-search"); sb.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>');
+      const inp = el("input"); inp.id = "catQ"; inp.type = "search"; inp.placeholder = "ابحث في " + (all ? "كتب " + g : "كتب " + c) + "…"; inp.setAttribute("aria-label", inp.placeholder);
+      inp.oninput = () => { $("q").value = inp.value; filter(); };
+      sb.appendChild(inp); ch.append(cr, top);
+      if (list_.length) ch.appendChild(sb);
+      $("q").value = ""; ch.hidden = false; document.body.classList.add("cat-view");
+      catHook = (n, raw) => {
+        mt.replaceChildren();
+        if (!list_.length) { mt.appendChild(el("span", "gm gm-soon", "لا توجد كتب مضافة في هذا التصنيف حالياً")); return; }
+        if (raw) { mt.append(meta(n, "book"), el("span", "dot", "•"), document.createTextNode("نتائج البحث عن «" + raw + "»")); return; }
+        mt.append(meta(list_.length, "book")); const pg = pagesOf(list_); if (pg) mt.append(el("span", "dot", "•"), meta(pg, "page"));
+      };
+      empty.querySelector("b").textContent = list_.length ? "لا توجد نتائج مطابقة" : "لا توجد كتب في «" + title + "» حالياً";
+      empty.querySelector("span").textContent = list_.length ? "جرّب كلمة أخرى." : "ستُضاف بإذن الله. يمكنك تصفّح بقية المجموعات.";
+      let eb = empty.querySelector(".empty-go"); if (!eb) { eb = el("button", "empty-go", "تصفّح المجموعات العلمية"); eb.type = "button"; eb.onclick = () => nav("", "", "colls"); empty.appendChild(eb); }
+      eb.hidden = !!list_.length;
+    }
+    function leaveCat() {
+      if (!document.body.classList.contains("cat-view")) return;
+      document.body.classList.remove("cat-view"); ch.hidden = true; catHook = null; $("q").value = "";
+      empty.querySelector("b").textContent = books.length ? "لا توجد نتائج مطابقة" : "لا توجد كتب بعد";
+      empty.querySelector("span").textContent = books.length ? "جرّب كلمة أخرى، أو اختر «الكل»." : "";
+      const eb = empty.querySelector(".empty-go"); if (eb) eb.hidden = true;
+    }
+    $("resClear").onclick = () => nav("", "", "lib");
+
     const hashOf = (g, c) => g ? "#g/" + encodeURIComponent(g) + (c ? "/" + encodeURIComponent(c) : "") : "";
     function nav(g, c, mode) {
       const h = hashOf(g, c), url = h || location.pathname + location.search;
@@ -574,12 +622,14 @@
     function apply(mode) {
       const s_ = parse(); if (!s_) return; // روابط داخلية أخرى (#library…)
       const was = viewG;
-      if (!s_.g || !GROUPS.some((x) => x.name === s_.g)) { if (was !== "") { level1(); if (was !== null) anim(); } setCat(""); }
+      if (!s_.g || !GROUPS.some((x) => x.name === s_.g)) { leaveCat(); if (was !== "") { level1(); if (was !== null) anim(); } setCat(""); }
       else {
         const val = s_.c && s_.c !== "*" ? s_.c : "g:" + s_.g;
-        setCat(val);
         if (was !== s_.g) { level2(s_.g); if (was !== null) anim(); }
+        if (s_.c) catView(s_.g, s_.c); else leaveCat();
+        setCat(val);
       }
+      if (s_.c) { window.scrollTo({ top: 0, behavior: "auto" }); return; }
       if (mode === "lib") goLib();
       else if (mode === "colls" && topOf(sec) < scrollY - 4) window.scrollTo({ top: topOf(sec), behavior: smooth() });
     }
