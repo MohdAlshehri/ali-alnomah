@@ -574,3 +574,16 @@ body.pg-open{overflow:hidden}
 .scrub b{color:var(--t-accent);font-size:16px;font-weight:800;line-height:1.2}
 @media (max-width:400px){.r-bottom .ibtn:not(.toc-btn){width:34px;min-width:34px}.ibtn.toc-btn{padding:0 4px;font-size:10.5px}}
 @media (max-width:400px){.r-bottom input[type=range]{display:none}}
+/* ===== روابط الملف الداخلية فوق الصفحة (v43) ===== */
+.lk-layer{position:absolute;inset:0;z-index:2;pointer-events:none}
+.lk{position:absolute;pointer-events:auto;padding:0;border:0;border-radius:3px;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.lk:hover{background:rgb(var(--t-accent-rgb) / .22)}
+.lk:active,.lk:focus-visible{background:rgb(var(--t-accent-rgb) / .38);outline:none}
+body.ann-open .lk-layer{display:none}
+@media (max-width:400px){
+  .r-bottom{gap:2px;padding-inline:4px}
+  .pnum{gap:3px;font-size:13px}
+  .pnum input{width:46px!important;min-width:0;padding-inline:2px}
+  .r-bottom .ibtn:not(.toc-btn){width:32px;min-width:32px}
+  .ibtn.toc-btn{padding:0 3px;min-width:44px}
+}

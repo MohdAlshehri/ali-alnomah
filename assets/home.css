@@ -560,3 +560,8 @@
   .colls.grps.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (min-width:761px) and (max-width:1099px){.colls.grps.g5 .grp:nth-child(5){grid-column:1/-1}}
+/* أغلفة القسم الافتتاحي كاملة بلا اقتصاص (v43): كل غلاف بنسبته الأصلية، وكلها تقف على نفس القاعدة */
+.fan{height:calc(var(--w) * 1.56 + 70px)}
+.fan a{aspect-ratio:auto;height:auto}
+.fan a img{height:auto;object-fit:contain}
+@media (max-width:520px){.fan{height:calc(var(--w) * 1.56 + 34px)}}

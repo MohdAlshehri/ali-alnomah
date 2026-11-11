@@ -29,7 +29,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23164e3b'/%3E%3Cpath d='M12 20c7-3 14-2 20 2v26c-6-4-13-5-20-2zM52 20c-7-3-14-2-20 2v26c6-4 13-5 20-2z' fill='%23c6a15b'/%3E%3Cpath d='M32 10l2.2 4.4 4.8.7-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8-3.5-3.4 4.8-.7z' fill='%23f7f3e8'/%3E%3C/svg%3E">
 <!-- THEME:START (يُولَّد تلقائياً: python3 tools/configure.py) --><style id="lib-theme">:root:root{--t-primary:#17365d;--t-primary-rgb:23 54 93;--t-primary-l:#254267;--t-primary-2:#112946;--t-primary-2-rgb:17 41 70;--t-primary-d:#0f233c;--t-primary-d-rgb:15 35 60;--t-primary-dd:#0b1a2d;--t-primary-dd-rgb:11 26 45;--t-stage:#091625;--t-stage-rgb:9 22 37;--t-sheet:#0e1d2f;--t-zoom:#07111e;--t-annbar-rgb:12 27 47;--t-accent:#d9b978;--t-accent-rgb:217 185 120;--t-accent-2-rgb:217 185 120;--t-accent-m:#b89d66;--t-accent-text:#766541;--t-bg:#f7f3e8;--t-bg-rgb:247 243 232;--t-bg-2:#f2e9d4;--t-card:#fdfbf8;--t-soft:#f3ebd9;--t-line:#e8dfcb;--t-line-2:#e7dfcb;--t-ink:#283d57;--t-ink-rgb:40 61 87;--t-muted:#667482;--t-muted-2:#6c7987;--t-on-dark-2:#f2e9d4;--t-on-dark-3:#f4eddd;--t-placeholder:#858f98;--t-chip:#efece2;--t-chip-h:#f1e7d2;--t-tint:#f2e9d4;--t-tint-2:#f6f0e2;--t-pg:#fbf8f2;--t-pg-2:#f4eddd;--t-pg-ink:#c7b894;--t-fan:#0d1e33;--t-line-h:#dcceaf;--t-line-h2:#ddd0b2;--t-frame:#f0eada;--t-frame-2:#ebe2ce;--t-frame-h:#eae1cc;--t-frame-h2:#e6dac0;--t-dot:#b8b09a;--t-highlight:#d9b978;--t-pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23d9b978' stroke-width='.7' stroke-opacity='.22'%3E%3Cpath d='M42 18l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='27' y='27' width='30' height='30' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='5'/%3E%3Cpath d='M0 0l12 12M84 0L72 12M0 84l12-12M84 84L72 72'/%3E%3C/g%3E%3C/svg%3E")}</style><!-- THEME:END -->
 <script>try{var _t=localStorage.getItem("lib-theme:"+location.pathname.replace(/[^/]*$/,""));if(_t){var _s=document.getElementById("lib-theme")||document.createElement("style");_s.id="lib-theme";_s.textContent=_t;if(!_s.parentNode)document.head.appendChild(_s)}}catch(e){}</script>
-<link rel="stylesheet" href="assets/style.css?v=42">
+<link rel="stylesheet" href="assets/style.css?v=43">
 </head>
 <body class="reader">
 <header class="r-top">
@@ -89,6 +89,9 @@
   </button>
   <button class="ibtn toc-btn" id="tocBtn" title="الانتقال إلى فهرس الكتاب" aria-label="الفهرس" hidden>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C6.4 4.4 9 4.6 12 6.4v13c-3-1.8-5.6-2-8-.9z"/><path d="M20 5.5c-2.4-1.1-5-.9-8 .9v13c3-1.8 5.6-2 8-.9z"/><path d="M14.5 10h3M14.5 13h3M6.5 10h3M6.5 13h3"/></svg><span>الفهرس</span>
+  </button>
+  <button class="ibtn toc-btn" id="sumBtn" title="الانتقال إلى ملخص الكتاب" aria-label="الملخص" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 12.5h6M9 16h4"/><path d="M15 3v3h3"/></svg><span id="sumLbl">الملخص</span>
   </button>
   <div class="pager">
     <label class="sr" for="slider">الانتقال إلى صفحة</label>
@@ -312,6 +315,7 @@ async function pump() {
       el.querySelectorAll("canvas,.pg-ph").forEach((n) => n.remove());
       el.appendChild(c);
       rendered.set(p, target);
+      addLinks(page, p, el);
     } catch (e) { console.warn("render", p, e); }
   }
   busy = false;
@@ -575,6 +579,7 @@ async function buildOutline() {
   $("tocBtn").hidden = !(TOC || outline.length);
   // تعريف أول مرة: نلفت نظر القارئ لزر الفهرس مرة واحدة فقط
   if (!$("tocBtn").hidden && !store.get("tocSeen")) { store.set("tocSeen", "1"); $("tocBtn").classList.add("glow"); setTimeout(() => toast("📑 لهذا الكتاب فهرس: اضغط «الفهرس» للانتقال إليه"), 1400); setTimeout(() => $("tocBtn").classList.remove("glow"), 6000); }
+  if (SUM && !store.get("sumSeen:" + book.file)) { store.set("sumSeen:" + book.file, "1"); $("sumBtn").classList.add("glow"); setTimeout(() => toast("📝 لهذا الكتاب ملخص: اضغط «" + $("sumLbl").textContent + "» للانتقال إليه"), 4200); setTimeout(() => $("sumBtn").classList.remove("glow"), 9000); }
 }
 buildOutline();
 $("tocBtn").onclick = () => {
@@ -631,6 +636,48 @@ $("fsBtn").onclick = () => {
   else { const el = d.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen || (() => toast("ملء الشاشة غير مدعوم في هذا المتصفح"))).call(el); }
 };
 
+// ===== ملخص الكتاب (book.summary = رقم صفحة البداية، و book.summaryLabel اختياري) — v43 =====
+const SUM = parseInt(book.summary, 10) >= 1 && parseInt(book.summary, 10) <= N ? parseInt(book.summary, 10) : 0;
+if (SUM) {
+  $("sumBtn").hidden = false; if (book.summaryLabel) { $("sumLbl").textContent = book.summaryLabel; $("sumBtn").setAttribute("aria-label", book.summaryLabel); }
+  $("sumBtn").onclick = () => { closeSheets(); if (visiblePages().includes(SUM)) { if (retP) $("backGo").onclick(); return; } goTo(SUM); };
+}
+
+// ===== روابط الملف الداخلية (مثل عناوين الفهرس المرتبطة بصفحاتها): مناطق شفافة قابلة للضغط فوق الصفحة — v43 =====
+const linkCache = new Map();
+async function pageLinks(page, p) {
+  if (linkCache.has(p)) return linkCache.get(p);
+  const out = [];
+  try {
+    const anns = await page.getAnnotations({ intent: "display" });
+    for (const a of anns) {
+      if (a.subtype !== "Link" || !a.dest || a.url) continue;
+      let dest = a.dest; if (typeof dest === "string") dest = await pdf.getDestination(dest);
+      if (!Array.isArray(dest) || dest[0] == null) continue;
+      const idx = typeof dest[0] === "object" ? await pdf.getPageIndex(dest[0]) : dest[0];
+      if (idx + 1 !== p && idx >= 0 && idx < N) out.push({ r: a.rect, to: idx + 1 });
+    }
+  } catch (e) {}
+  linkCache.set(p, out); return out;
+}
+async function addLinks(page, p, el) {
+  const links = await pageLinks(page, p); el.querySelectorAll(".lk-layer").forEach((x) => x.remove());
+  if (!links.length) return;
+  const v0 = page.getViewport({ scale: 1 }), cw = CROP ? CROP[2] - CROP[0] : v0.width, ch = CROP ? CROP[3] - CROP[1] : v0.height, ox = CROP && p !== 1 ? CROP[0] : 0, oy = CROP && p !== 1 ? CROP[1] : 0;
+  const layer = document.createElement("div"); layer.className = "lk-layer";
+  for (const l of links) {
+    const [x1, y1, x2, y2] = v0.convertToViewportRectangle(l.r);
+    const L = (Math.min(x1, x2) - ox) / cw, T = (Math.min(y1, y2) - oy) / ch, W = Math.abs(x2 - x1) / cw, Hh = Math.abs(y2 - y1) / ch;
+    if (W <= 0 || Hh <= 0 || L > 1 || T > 1) continue;
+    const a = document.createElement("button"); a.type = "button"; a.className = "lk"; a.setAttribute("aria-label", "الانتقال إلى صفحة " + pn(l.to));
+    a.style.cssText = `left:${(L * 100).toFixed(2)}%;top:${(T * 100).toFixed(2)}%;width:${(W * 100).toFixed(2)}%;height:${(Hh * 100).toFixed(2)}%`;
+    ["pointerdown", "mousedown", "touchstart", "touchend", "mouseup"].forEach((ev) => a.addEventListener(ev, (e) => e.stopPropagation(), { passive: true }));
+    a.addEventListener("click", (e) => { e.stopPropagation(); e.preventDefault(); goTo(l.to); });
+    layer.appendChild(a);
+  }
+  el.appendChild(layer);
+}
+
 // ===== مصغرات الصفحات: لوحة «الصفحات» + معاينة أثناء سحب الشريط (v42) =====
 const thumbs = new Map(), thumbWait = new Map(); let thumbBusy = 0; const thumbQ = [];
 const thumbLabel = (p) => p <= OFF ? (p === 1 ? "الغلاف" : "–") : pn(p);
@@ -667,7 +714,7 @@ function buildPages() {
     const b = document.createElement("button"); b.type = "button"; b.className = "pg-th"; b.dataset.p = p;
     b.setAttribute("aria-label", "الصفحة " + thumbLabel(p));
     const im = document.createElement("span"); im.className = "pg-img"; const n = document.createElement("span"); n.className = "pg-n"; n.textContent = thumbLabel(p);
-    b.append(im, n); if (p === TOC) { const t = document.createElement("span"); t.className = "pg-tag"; t.textContent = "الفهرس"; b.appendChild(t); }
+    b.append(im, n); if (p === TOC || p === SUM) { const t = document.createElement("span"); t.className = "pg-tag"; t.textContent = p === TOC ? "الفهرس" : ($("sumLbl").textContent); b.appendChild(t); }
     b.onclick = () => { closePages(); goTo(p); };
     frag.appendChild(b); pgIO.observe(b);
   }
