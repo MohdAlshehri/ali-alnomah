@@ -603,3 +603,8 @@
 .g-site .frame .cv{position:absolute;inset:8px;width:auto;height:auto;display:flex;align-items:flex-end;justify-content:center}
 .g-site .frame .cv img,.g-site .frame .cv canvas{max-width:100%;max-height:100%;width:auto;height:auto}
 @media (max-width:640px){.g-site .frame .cv{inset:6px}}
+/* أغلفة موحّدة الأبعاد في كل البطاقات (v51): كل الأغلفة بنسبة واحدة ٦٠٠×٨٧٣ تملأ إطارها */
+.g-site .frame{aspect-ratio:auto;padding:8px}
+.g-site .frame .cv{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:600/873;display:block}
+.g-site .frame .cv img,.g-site .frame .cv canvas{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;display:block}
+@media (max-width:640px){.g-site .frame{padding:6px}}
