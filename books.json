@@ -502,32 +502,30 @@
       "id": "b19",
       "title": "آداب قراءة القرآن الكريم",
       "file": "books/book-19.pdf",
-      "cover": "covers/book-19.jpg",
-      "pages": 15,
+      "cover": "covers/book-19.jpg?v=2",
+      "pages": 29,
       "date": "2025-03-06",
       "added": "2026-11-12",
       "category": "محاضرات وكلمات",
       "crop": [
-        58.0,
-        20.0,
-        536.0,
-        768.0
+        21.5,
+        24.3,
+        398.0,
+        572.3
       ],
       "cropCover": [
-        58.0,
-        20.0,
-        536.0,
-        768.0
+        21.5,
+        24.3,
+        398.0,
+        572.3
       ],
-      "noCrop": [
-        2
-      ]
+      "pageOffset": 1
     },
     {
       "id": "b20",
       "title": "نعمة الوقت",
       "file": "books/book-20.pdf",
-      "cover": "covers/book-20.jpg",
+      "cover": "covers/book-20.jpg?v=2",
       "pages": 15,
       "date": "2025-03-12",
       "added": "2026-11-12",
