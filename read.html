@@ -333,7 +333,7 @@ const emitTurn = () => turnCbs.forEach((f) => f());
 
 function makeSpread() {
   const flip = new St.PageFlip($("book"), {
-    width: Math.round(vp1.width), height: Math.round(vp1.height),
+    width: 1000, height: Math.round(1000 / RATIO), // نسبة الصفحة المعروضة (بعد قص الهوامش إن وُجد)
     size: "stretch", autoSize: true,
     minWidth: 50, maxWidth: 4000, minHeight: 50, maxHeight: 6000,
     showCover: true, usePortrait: true, mobileScrollSupport: false,
