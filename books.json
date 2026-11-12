@@ -553,7 +553,7 @@
       "id": "b21",
       "title": "حرمة سفك الدماء وأسباب انتشاره في المجتمعات المعاصرة",
       "file": "books/book-21.pdf",
-      "cover": "covers/book-21.jpg",
+      "cover": "covers/book-21.jpg?v=2",
       "pages": 14,
       "date": "2026-04-17",
       "added": "2026-11-12",
@@ -577,11 +577,34 @@
     },
     {
       "id": "b22",
-      "title": "الحجاب",
+      "title": "الحجاب كما فهمه فقهاء الأمة",
       "file": "books/book-22.pdf",
-      "cover": "covers/book-22.jpg",
+      "cover": "covers/book-22.jpg?v=2",
       "pages": 11,
-      "date": "2026-11-12",
+      "date": "2026-10-09",
+      "added": "2026-11-12",
+      "category": "الخطب",
+      "crop": [
+        21.5,
+        24.3,
+        398.0,
+        572.3
+      ],
+      "cropCover": [
+        21.5,
+        24.3,
+        398.0,
+        572.3
+      ],
+      "pageOffset": 1
+    },
+    {
+      "id": "b23",
+      "title": "نعمة التوحيد والوطن والأمن ووحدة الصف",
+      "file": "books/book-23.pdf",
+      "cover": "covers/book-23.jpg",
+      "pages": 10,
+      "date": "2026-09-18",
       "added": "2026-11-12",
       "category": "الخطب",
       "crop": [
