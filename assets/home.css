@@ -578,3 +578,10 @@
 .sub-cv{bottom:20px}
 .sub h3{line-height:1.45}
 @media (max-width:760px){.sub .sub-t{padding-inline-end:0}}
+/* تصنيف «الأبحاث المحكمة» داخل المجموعة: سطر صغير يوضح انتماءه (v45) */
+.sub-of{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:-2px;padding:3px 11px 3px 10px;border-radius:999px;background:rgb(var(--t-accent-rgb) / .16);color:var(--gold);font-size:13.5px;font-weight:700;line-height:1.6}
+.sub-of svg{width:14px;height:14px}
+.sub.sub-peer{border-color:rgb(var(--t-accent-rgb) / .6);background:linear-gradient(180deg,rgb(var(--t-accent-rgb) / .07),var(--white) 55%)}
+.sub.sub-peer .sub-ic{background:rgb(var(--t-accent-rgb) / .18);color:var(--gold)}
+.sub.sub-peer:hover .sub-ic,.sub.sub-peer.on .sub-ic{background:var(--emerald);color:var(--gold-l)}
+.cat-of{display:inline-block;margin-bottom:2px;padding:3px 12px;border-radius:999px;background:rgb(var(--t-accent-rgb) / .2);color:var(--t-accent);font-size:14px;font-weight:700;line-height:1.6}
