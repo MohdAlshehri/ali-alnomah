@@ -522,6 +522,29 @@
       "noCrop": [
         2
       ]
+    },
+    {
+      "id": "b20",
+      "title": "نعمة الوقت",
+      "file": "books/book-20.pdf",
+      "cover": "covers/book-20.jpg",
+      "pages": 15,
+      "date": "2025-03-12",
+      "added": "2026-11-12",
+      "category": "محاضرات وكلمات",
+      "crop": [
+        21.5,
+        24.3,
+        398.0,
+        572.3
+      ],
+      "cropCover": [
+        21.5,
+        24.3,
+        398.0,
+        572.3
+      ],
+      "pageOffset": 1
     }
   ]
 }
