@@ -585,3 +585,16 @@
 .sub.sub-peer .sub-ic{background:rgb(var(--t-accent-rgb) / .18);color:var(--gold)}
 .sub.sub-peer:hover .sub-ic,.sub.sub-peer.on .sub-ic{background:var(--emerald);color:var(--gold-l)}
 .cat-of{display:inline-block;margin-bottom:2px;padding:3px 12px;border-radius:999px;background:rgb(var(--t-accent-rgb) / .2);color:var(--t-accent);font-size:14px;font-weight:700;line-height:1.6}
+/* عناوين بطاقات التصنيف على سطر واحد (v46): الأغلفة المصغّرة فوق بجانب السهم بدل أسفل */
+.sub .sub-t{padding-inline-end:0;max-width:100%;width:100%}
+.sub h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(19px,1.55vw,23px)}
+.sub-cv{top:20px;bottom:auto;inset-inline-end:52px}
+@media (max-width:760px){
+  .colls.subs .sub-all{grid-column:1/-1;min-height:0}
+  .colls.subs .sub-all .sub-cv{display:flex}
+  .sub h3{font-size:18px}
+}
+@media (max-width:360px){.sub h3{font-size:16.5px}}
+.sub-of{white-space:nowrap;max-width:100%}
+@media (max-width:760px){.sub-of{font-size:12px;padding:2px 9px 2px 8px;gap:4px}.sub-of svg{width:12px;height:12px}}
+@media (max-width:360px){.sub-of svg{display:none}}
