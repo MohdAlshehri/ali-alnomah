@@ -12,7 +12,6 @@
 ## محاضرات وكلمات
 
 - [نعمة الأمن في بلادنا](https://mohdalshehri.github.io/ali-alnomah/kitab/b17.html): محاضرات وكلمات، ٧ صفحات
-- [لقاء على مائدة اللغة والأدب](https://mohdalshehri.github.io/ali-alnomah/kitab/b18.html): محاضرات وكلمات، ٤٦ صفحة
 - [آداب قراءة القرآن الكريم](https://mohdalshehri.github.io/ali-alnomah/kitab/b19.html): محاضرات وكلمات، ٢٩ صفحة
 - [نعمة الوقت](https://mohdalshehri.github.io/ali-alnomah/kitab/b20.html): محاضرات وكلمات، ١٥ صفحة
 
@@ -45,3 +44,7 @@
 ## الرسائل العلمية في علوم اللغة العربية
 
 - [مباحث علم المعاني في تفسير الشيخ محمد بن صالح العثيمين](https://mohdalshehri.github.io/ali-alnomah/kitab/b04.html): الرسائل العلمية في علوم اللغة العربية، ٢٨٦ صفحة
+
+## لقاءات متنوعة في علوم اللغة العربية
+
+- [لقاء على مائدة اللغة والأدب](https://mohdalshehri.github.io/ali-alnomah/kitab/b18.html): لقاءات متنوعة في علوم اللغة العربية، ٧٩ صفحة
