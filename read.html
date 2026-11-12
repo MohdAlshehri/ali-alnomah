@@ -239,11 +239,16 @@ const first = await pdf.getPage(1);
 const vp1 = first.getViewport({ scale: 1 });
 // قصّ الهوامش البيضاء عند العرض فقط (book.crop = [x0,y0,x1,y1] بنقاط PDF من أعلى اليسار، يُحسب أثناء التجهيز ليشمل كل محتوى الصفحات). الملف نفسه لا يتغير
 const CROP = Array.isArray(book.crop) && book.crop.length === 4 && book.crop[2] > book.crop[0] && book.crop[3] > book.crop[1] ? book.crop.map(Number) : null;
+const FULLP = new Set((Array.isArray(book.noCrop) ? book.noCrop : []).map(Number));
 const RATIO = CROP ? (CROP[2] - CROP[0]) / (CROP[3] - CROP[1]) : vp1.width / vp1.height;
 // يرسم الصفحة p داخل لوحة w×h: مقصوصة الهوامش، والغلاف (ص١) كاملاً في الوسط
 async function drawPage(page, p, ctx, w, h) {
   const v0 = page.getViewport({ scale: 1 });
   if (!CROP) { await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: w / v0.width }) }).promise; return; }
+  if (FULLP.has(p)) { // صفحة تُعرض كاملة بلا قص (مثل غلاف المجلة الأصلي بعد الغلاف الجديد) — v46
+    const s = Math.min(w / v0.width, h / v0.height); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
+    await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: s }), transform: [1, 0, 0, 1, (w - v0.width * s) / 2, (h - v0.height * s) / 2] }).promise; return;
+  }
   if (p === 1) { // الغلاف: يُعرض كاملاً (أو مقصوصاً بـ book.cropCover) في وسط المساحة
     const C = Array.isArray(book.cropCover) && book.cropCover.length === 4 ? book.cropCover.map(Number) : [0, 0, v0.width, v0.height];
     const cw = C[2] - C[0], ch = C[3] - C[1], s = Math.min(w / cw, h / ch);
