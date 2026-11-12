@@ -33,7 +33,7 @@
 </head>
 <body class="reader">
 <header class="r-top">
-  <a class="ibtn" href="./" title="العودة إلى المكتبة" aria-label="العودة إلى المكتبة">
+  <a class="ibtn" id="homeBtn" href="./" title="العودة إلى المكتبة" aria-label="العودة إلى المكتبة">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
   </a>
   <div class="r-title" id="title">…</div>
@@ -635,6 +635,17 @@ $("fsBtn").onclick = () => {
   if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
   else { const el = d.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen || (() => toast("ملء الشاشة غير مدعوم في هذا المتصفح"))).call(el); }
 };
+
+// ===== زر المكتبة: يرجع لنفس المكان اللي جاء منه القارئ (المجموعة/التصنيف وموضع التمرير) — v44 =====
+$("homeBtn").addEventListener("click", (e) => {
+  let v = null; try { v = JSON.parse(sessionStorage.getItem("libView") || "null"); } catch (x) {}
+  if (!v) return; // فُتح الكتاب مباشرة من رابط: الرئيسية كالمعتاد
+  e.preventDefault();
+  try { sessionStorage.setItem("libRestore", "1"); } catch (x) {}
+  const lib = new URL("./", location.href).href, ref = document.referrer.split("#")[0];
+  if (history.length > 1 && (ref === lib || ref === lib + "index.html")) history.back();
+  else location.href = "./" + (v.h || "");
+});
 
 // ===== ملخص الكتاب (book.summary = رقم صفحة البداية، و book.summaryLabel اختياري) — v43 =====
 const SUM = parseInt(book.summary, 10) >= 1 && parseInt(book.summary, 10) <= N ? parseInt(book.summary, 10) : 0;

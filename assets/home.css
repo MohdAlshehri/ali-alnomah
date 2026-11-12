@@ -572,3 +572,9 @@
 .g-sec-rest{margin-top:18px}
 .sub.sub-in{border-color:rgb(var(--t-accent-rgb) / .55)}
 .cat-crumb .cat-sec{color:var(--t-on-dark-2);font-size:14.5px}
+/* بطاقات التصنيف: الأغلفة المصغّرة في مساحتها الخاصة فلا تغطي العنوان (v44) */
+.sub{padding-bottom:20px}
+.sub .sub-t{padding-inline-end:84px}
+.sub-cv{bottom:20px}
+.sub h3{line-height:1.45}
+@media (max-width:760px){.sub .sub-t{padding-inline-end:0}}
