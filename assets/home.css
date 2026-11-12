@@ -565,3 +565,10 @@
 .fan a{aspect-ratio:auto;height:auto}
 .fan a img{height:auto;object-fit:contain}
 @media (max-width:520px){.fan{height:calc(var(--w) * 1.56 + 34px)}}
+/* قسم فرعي داخل المجموعة (v44) */
+.g-sec{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin:8px 0 -2px;padding-bottom:8px;border-bottom:1.5px solid rgb(var(--t-accent-rgb) / .45)}
+.g-sec b{font-family:var(--display);font-size:clamp(21px,2vw,25px);line-height:1.5;color:var(--t-head,var(--emerald))}
+.g-sec span{font-size:14.5px;color:var(--muted)}
+.g-sec-rest{margin-top:18px}
+.sub.sub-in{border-color:rgb(var(--t-accent-rgb) / .55)}
+.cat-crumb .cat-sec{color:var(--t-on-dark-2);font-size:14.5px}
