@@ -598,3 +598,8 @@
 .sub-of{white-space:nowrap;max-width:100%}
 @media (max-width:760px){.sub-of{font-size:12px;padding:2px 9px 2px 8px;gap:4px}.sub-of svg{width:12px;height:12px}}
 @media (max-width:360px){.sub-of svg{display:none}}
+/* الغلاف محصور داخل الإطار دائماً مهما كانت نسبته (v47) */
+.g-site .frame{display:block;position:relative;overflow:hidden}
+.g-site .frame .cv{position:absolute;inset:8px;width:auto;height:auto;display:flex;align-items:flex-end;justify-content:center}
+.g-site .frame .cv img,.g-site .frame .cv canvas{max-width:100%;max-height:100%;width:auto;height:auto}
+@media (max-width:640px){.g-site .frame .cv{inset:6px}}
