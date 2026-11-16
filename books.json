@@ -914,8 +914,8 @@
       "id": "b39",
       "title": "اتجاهات القدماء في توظيف القرآن الكريم والحديث الشريف في الشعر (دراسة نقدية)",
       "file": "books/book-39.pdf",
-      "cover": "covers/book-39.jpg",
-      "pages": 42,
+      "cover": "covers/book-39.jpg?v=2",
+      "pages": 46,
       "added": "2026-11-16",
       "category": "الأبحاث المحكمة في علوم اللغة العربية",
       "crop": [
@@ -930,7 +930,7 @@
         398.0,
         572.3
       ],
-      "pageOffset": 2
+      "pageOffset": 3
     },
     {
       "id": "b40",
