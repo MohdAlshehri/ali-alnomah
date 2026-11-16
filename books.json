@@ -875,7 +875,7 @@
       "id": "b37",
       "title": "سبيل الوصول إلى مقاصد ثلاثة الأصول",
       "file": "books/book-37.pdf",
-      "cover": "covers/book-37.jpg",
+      "cover": "covers/book-37.jpg?v=2",
       "pages": 49,
       "added": "2026-11-16",
       "category": "العقيدة",
@@ -887,10 +887,10 @@
         666
       ],
       "cropCover": [
+        30.2,
         0,
-        0,
-        595,
-        842
+        564.8,
+        842.0
       ],
       "noCrop": [
         2,
