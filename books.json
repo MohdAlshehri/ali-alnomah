@@ -180,12 +180,12 @@
       "id": "b04",
       "title": "مباحث علم المعاني في تفسير الشيخ محمد بن صالح العثيمين",
       "file": "books/book-04.pdf",
-      "cover": "covers/book-04.jpg?v=2",
-      "pages": 286,
+      "cover": "covers/book-04.jpg?v=3",
+      "pages": 287,
       "added": "2026-11-11",
       "category": "الرسائل العلمية في علوم اللغة العربية",
-      "toc": 285,
-      "pageOffset": 7
+      "toc": 286,
+      "pageOffset": 8
     },
     {
       "id": "b05",
@@ -963,6 +963,32 @@
       "added": "2026-11-16",
       "category": "الأبحاث المحكمة في علوم اللغة العربية",
       "pageOffset": 3
+    },
+    {
+      "id": "b42",
+      "title": "خصائص التراكيب في آيات العقيدة وأثرها في تقرير المعنى",
+      "file": "books/book-42.pdf",
+      "cover": "covers/book-42.jpg?v=1",
+      "pages": 459,
+      "added": "2026-11-16",
+      "category": "الرسائل العلمية في علوم اللغة العربية",
+      "toc": 458,
+      "pageOffset": 1,
+      "crop": [
+        42,
+        16,
+        521,
+        828
+      ],
+      "cropCover": [
+        0,
+        0,
+        595.3,
+        841.9
+      ],
+      "noCrop": [
+        2
+      ]
     }
   ]
 }
