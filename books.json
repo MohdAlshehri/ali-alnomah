@@ -906,6 +906,43 @@
         572.3
       ],
       "pageOffset": 1
+    },
+    {
+      "id": "b37",
+      "title": "سبيل الوصول إلى مقاصد ثلاثة الأصول",
+      "file": "books/book-37.pdf",
+      "cover": "covers/book-37.jpg",
+      "pages": 49,
+      "date": "2018-01-01",
+      "added": "2026-11-16",
+      "category": "العقيدة",
+      "pageOffset": 1,
+      "crop": [
+        140,
+        162,
+        460,
+        666
+      ],
+      "cropCover": [
+        0,
+        0,
+        595,
+        842
+      ],
+      "noCrop": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "b38",
+      "title": "De Drie Fundamenten — الترجمة الهولندية لكتاب «سبيل الوصول إلى مقاصد ثلاثة الأصول»",
+      "file": "books/book-38.pdf",
+      "cover": "covers/book-38.jpg",
+      "pages": 66,
+      "date": "2020-08-01",
+      "added": "2026-11-16",
+      "category": "العقيدة"
     }
   ]
 }
