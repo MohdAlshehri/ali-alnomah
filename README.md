@@ -34,3 +34,8 @@
 ## خيارات اختيارية (v39)
 - **العنوان بالخط اليدوي**: `"titleArt": "assets/title.svg"` في site — يحل محل العنوان وسطر المؤلف في القسم الافتتاحي. داخل SVG: الأجزاء `class="t"` تأخذ لون العنوان و `class="n"` لون سطر المؤلف حسب الهوية، وبدون class تبقى بألوانها.
 - **كتب قيد الإعداد**: مصفوفة `"upcoming": [{"title": "…", "cover": "covers/…jpg", "note": "…"}]` في books.json (بجانب books، مو داخلها)، وعنوان القسم `site.upcomingTitle` (الافتراضي «كتب قيد الإعداد»). ما تدخل في عدد الكتب ولا صفحات محركات البحث.
+
+## التثبيت كتطبيق (PWA)
+- السكربت: `tools/pwa.py` — يولّد الأيقونات (`assets/icon-*.png` و`favicon-32.png` و`apple-touch-icon.png`) و`manifest.webmanifest` و`sw.js`، ويضع وسوم التثبيت بين علامتي `PWA:START/END` في الصفحات.
+- يُستدعى تلقائياً من آخر `tools/configure.py`، ويُعاد تشغيله (`python3 tools/pwa.py`) عند تغيّر اسم المكتبة أو ألوان الهوية.
+- اسم التطبيق والاسم القصير يُحدَّدان في `books.json` ← `site.appName` و `site.appShortName`.

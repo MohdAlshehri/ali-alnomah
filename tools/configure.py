@@ -113,3 +113,7 @@ if site.get("theme"):
         os.remove(ic); print("✓ أيقونة الآيفون بألوان الهوية: assets/apple-touch-icon.png")
     except Exception as ex:
         print("⚠ تعذّر توليد أيقونة الآيفون:", ex)
+
+# تجهيز التثبيت كتطبيق (PWA): الأيقونات والـ manifest وعامل الخدمة ووسوم الصفحات
+import subprocess, sys as _sys
+subprocess.run([_sys.executable, str(ROOT / "tools/pwa.py")], check=False)
