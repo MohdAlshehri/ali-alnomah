@@ -29,7 +29,7 @@
 <!-- THEME:START (يُولَّد تلقائياً: python3 tools/configure.py) --><style id="lib-theme">:root:root{--t-primary:#17365d;--t-primary-rgb:23 54 93;--t-primary-l:#254267;--t-primary-2:#112946;--t-primary-2-rgb:17 41 70;--t-primary-d:#0f233c;--t-primary-d-rgb:15 35 60;--t-primary-dd:#0b1a2d;--t-primary-dd-rgb:11 26 45;--t-stage:#091625;--t-stage-rgb:9 22 37;--t-sheet:#0e1d2f;--t-zoom:#07111e;--t-annbar-rgb:12 27 47;--t-accent:#d9b978;--t-accent-rgb:217 185 120;--t-accent-2-rgb:217 185 120;--t-accent-m:#b89d66;--t-accent-text:#766541;--t-bg:#f7f3e8;--t-bg-rgb:247 243 232;--t-bg-2:#f2e9d4;--t-card:#fdfbf8;--t-soft:#f3ebd9;--t-line:#e8dfcb;--t-line-2:#e7dfcb;--t-ink:#283d57;--t-ink-rgb:40 61 87;--t-muted:#667482;--t-muted-2:#6c7987;--t-on-dark-2:#f2e9d4;--t-on-dark-3:#f4eddd;--t-placeholder:#858f98;--t-chip:#efece2;--t-chip-h:#f1e7d2;--t-tint:#f2e9d4;--t-tint-2:#f6f0e2;--t-pg:#fbf8f2;--t-pg-2:#f4eddd;--t-pg-ink:#c7b894;--t-fan:#0d1e33;--t-line-h:#dcceaf;--t-line-h2:#ddd0b2;--t-frame:#f0eada;--t-frame-2:#ebe2ce;--t-frame-h:#eae1cc;--t-frame-h2:#e6dac0;--t-dot:#b8b09a;--t-highlight:#d9b978;--t-pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23d9b978' stroke-width='.7' stroke-opacity='.22'%3E%3Cpath d='M42 18l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='27' y='27' width='30' height='30' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='5'/%3E%3Cpath d='M0 0l12 12M84 0L72 12M0 84l12-12M84 84L72 72'/%3E%3C/g%3E%3C/svg%3E")}</style><!-- THEME:END -->
 <script>try{var _t=localStorage.getItem("lib-theme:"+location.pathname.replace(/[^/]*$/,""));if(_t){var _s=document.getElementById("lib-theme")||document.createElement("style");_s.id="lib-theme";_s.textContent=_t;if(!_s.parentNode)document.head.appendChild(_s)}}catch(e){}</script>
 <link rel="stylesheet" href="assets/style.css?v=46">
-<link rel="stylesheet" href="assets/home.css?v=52">
+<link rel="stylesheet" href="assets/home.css?v=53">
 <!-- PWA:START (يُولَّد تلقائياً: python3 tools/pwa.py) -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -52,6 +52,7 @@
       <span class="brand-txt"><b id="bTitle">المكتبة</b><small id="bAuthor"></small></span>
     </a>
     <nav class="nav" aria-label="التنقل الرئيسي">
+      <a href="#bio" id="navBio" hidden>السيرة العلمية</a>
       <a href="#colls">المجموعات العلمية</a>
       <a href="#library">جميع الكتب</a>
       <a href="#soon" id="navSoon" hidden>قيد الإعداد</a>
@@ -109,6 +110,30 @@
   </div>
 </section>
 </div>
+
+<!-- السيرة العلمية (site.bio): بطاقة تعريف + مسيرة النشر. photo اختياري (صورة مصغرة دائرية)، وبدونه يظهر الاسم بالخط اليدوي -->
+<section class="sec bio-sec" id="bio" aria-labelledby="bioH" hidden>
+  <div class="wrap">
+    <div class="sec-head rv"><div><div class="sec-kicker" id="bioKick">تعريف بالمؤلف</div><h2 id="bioH">السيرة العلمية</h2></div></div>
+    <div class="bio-grid rv">
+      <div class="bio-card">
+        <div class="bio-pat" aria-hidden="true"></div>
+        <div class="bio-id">
+          <div class="bio-ph" id="bioPh"></div>
+          <div class="bio-name" id="bioName"></div>
+          <div class="bio-rank" id="bioRank"></div>
+        </div>
+        <div class="bio-data">
+          <dl class="bio-facts" id="bioFacts"></dl>
+        </div>
+      </div>
+      <div class="bio-tl">
+        <h3 id="bioTlH">مسيرة النشر العلمي</h3>
+        <ol id="bioTl"></ol>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="sec soon-sec" id="soon" aria-labelledby="soonH" hidden>
   <div class="wrap">
@@ -783,6 +808,45 @@
   const tbar = $("topbar"), lb = $("libBar");
   const onScroll = () => { tbar.classList.toggle("stuck", scrollY > 40); lb.classList.toggle("stuck", lb.getBoundingClientRect().top <= tbar.offsetHeight + 1); };
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // ===== السيرة العلمية (site.bio) =====
+  (function () {
+    const B = site.bio; if (!B || (!B.facts && !B.timeline)) return;
+    if (!(B.timeline || []).length) { document.querySelector(".bio-grid").classList.add("solo"); }
+    const pc = (n, w) => (window.Lib && Lib.plural ? Lib.plural(n, w) : w);
+    if (B.kicker) $("bioKick").textContent = B.kicker; if (B.heading) $("bioH").textContent = B.heading;
+    const ph = $("bioPh");
+    if (B.photo) { const im = el("img"); im.src = B.photo; im.alt = B.name || site.title; im.loading = "lazy"; ph.classList.add("has-img"); ph.appendChild(im); }
+    else { const t = (B.name || site.title || "").replace(/^(أ\.د\.|د\.|الشيخ|البروفيسور)\s*/, "").trim().split(/\s+/); ph.appendChild(el("span", "bio-ini", (t[0] || "").charAt(0))); }
+    if (site.nameArt) { const n = el("span", "bio-art"); n.setAttribute("role", "img"); n.setAttribute("aria-label", B.name || site.title); n.style.setProperty("--na", 'url("' + new URL(site.nameArt, location.href).href + '")'); $("bioName").appendChild(n); $("bioName").appendChild(el("span", "sr-only", B.name || "")); }
+    else $("bioName").appendChild(el("b", "bio-name-t", B.name || site.title));
+    if (B.name && site.nameArt) $("bioName").appendChild(el("small", "bio-full", B.name));
+    if (B.rank) $("bioRank").textContent = B.rank; else $("bioRank").remove();
+    if (B.cvPage) requestAnimationFrame(() => { const a = el("a", "bio-cv-btn", "السيرة الذاتية كاملة ←"); a.href = B.cvPage; document.querySelector(".bio-data").appendChild(a); });
+    // نسخ السيرة الذاتية (site.bio.cv): بطاقات صغيرة لكل نسخة تفتح في القارئ
+    const CV = (B.cvPage ? [] : B.cv || []).map((c) => Object.assign({}, c, { bk: books.find((x) => x.id === c.id) })).filter((c) => c.bk);
+    if (CV.length) requestAnimationFrame(() => { const w = el("div", "bio-cvs"); w.appendChild(el("div", "bio-cvs-h", "السيرة الذاتية")); const g = el("div", "bio-cvs-g");
+      CV.forEach((c) => { const a = el("a", "bio-cvv"); a.href = "read.html?id=" + encodeURIComponent(c.id);
+        a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 15.5h6M9 9h2"/></svg>';
+        a.appendChild(el("b", "", c.label)); const s = el("small", "", (c.note ? c.note + " • " : "") + ar(+c.bk.pages || 0) + " " + plural(+c.bk.pages || 0, "page")); a.appendChild(s); g.appendChild(a); });
+      w.appendChild(g); document.querySelector(".bio-data").appendChild(w); });
+    (B.facts || []).forEach((f) => { const r = el("div", "bio-f"); r.appendChild(el("dt", "", f.k)); r.appendChild(el("dd", "", f.v)); $("bioFacts").appendChild(r); });
+    if (B.timelineTitle) $("bioTlH").textContent = B.timelineTitle;
+    // محطات مضغوطة: الأحدث أولاً، ويظهر أول timelineShow (4 افتراضياً) وزر لعرض الباقي
+    const TL = (B.timeline || []).slice().reverse(), SHOW = +B.timelineShow || 4;
+    TL.forEach((t, i) => { const li = el("li"); if (i >= SHOW) { li.className = "bio-more"; li.hidden = true; }
+      const bk = t.book && books.find((b) => b.id === t.book);
+      const box = el(bk ? "a" : "div", "bio-it"); if (bk) box.href = "read.html?id=" + encodeURIComponent(bk.id);
+      box.appendChild(el("span", "bio-y", t.y || ""));
+      const tx = el("div", "bio-tx"); tx.appendChild(el("b", "", t.t || "")); if (t.d) tx.appendChild(el("small", "", t.d)); box.appendChild(tx);
+      if (bk) { const g = el("span", "bio-go"); g.setAttribute("aria-hidden", "true"); g.textContent = "←"; box.appendChild(g); }
+      li.appendChild(box); $("bioTl").appendChild(li); });
+    if (TL.length > SHOW) { const btn = el("button", "bio-all", "عرض المسيرة كاملة (" + TL.length + ")"); btn.type = "button";
+      btn.onclick = () => { const open = btn.classList.toggle("on"); document.querySelectorAll("#bioTl .bio-more").forEach((x) => (x.hidden = !open)); btn.textContent = open ? "إخفاء ↑" : "عرض المسيرة كاملة (" + TL.length + ")"; };
+      document.querySelector(".bio-tl").appendChild(btn); }
+    if (!(B.timeline || []).length) document.querySelector(".bio-tl").remove();
+    $("bio").hidden = false; $("navBio").hidden = false;
+  })();
 })();
 </script>
 </body>

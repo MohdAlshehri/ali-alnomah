@@ -111,7 +111,7 @@ BLOCK = "\n".join([
     '<script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})</script>',
     '<!-- PWA:END -->'])
 OLD = [r'<link rel="apple-touch-icon"[^>]*>\n?', r'<link rel="icon" href="data:image/svg\+xml[^>]*>\n?']
-for page in ["index.html", "read.html", "admin.html", "fawaid.html"]:
+for page in ["index.html", "read.html", "admin.html", "fawaid.html", "cv.html"]:
     p = ROOT / page
     if not p.exists(): continue
     s = p.read_text(encoding="utf-8")

@@ -44,7 +44,7 @@ if site.get("theme"):
             theme_css = pg.evaluate("t => Lib.themeCss(t)", site["theme"]); br.close()
     except Exception as ex:
         print("⚠ تعذّر حساب ألوان الهوية:", ex)
-for name in ("index.html", "read.html", "admin.html"):
+for name in ("index.html", "read.html", "admin.html", "cv.html"):
     p = ROOT / name; s = p.read_text(encoding="utf-8")
     blk = "<!-- THEME:START (يُولَّد تلقائياً: python3 tools/configure.py) -->" + (f'<style id="lib-theme">{theme_css}</style>' if theme_css else "") + "<!-- THEME:END -->"
     s, n = re.subn(r"<!-- THEME:START.*?<!-- THEME:END -->", lambda m: blk, s, flags=re.S)
