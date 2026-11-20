@@ -88,3 +88,4 @@
   .cv-tbl td:nth-child(2){font-weight:700;color:var(--t-ink)}
   .cv-tbl td:nth-child(n+3)::before{content:attr(data-l) "\003A  ";font-weight:700;color:var(--t-primary);font-size:.9em}
 }
+.cv-mail+.cv-mail{margin-inline-start:8px}
