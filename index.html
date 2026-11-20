@@ -820,7 +820,7 @@
     else { const t = (B.name || site.title || "").replace(/^(أ\.د\.|د\.|الشيخ|البروفيسور)\s*/, "").trim().split(/\s+/); ph.appendChild(el("span", "bio-ini", (t[0] || "").charAt(0))); }
     if (site.nameArt) { const n = el("span", "bio-art"); n.setAttribute("role", "img"); n.setAttribute("aria-label", B.name || site.title); n.style.setProperty("--na", 'url("' + new URL(site.nameArt, location.href).href + '")'); $("bioName").appendChild(n); $("bioName").appendChild(el("span", "sr-only", B.name || "")); }
     else $("bioName").appendChild(el("b", "bio-name-t", B.name || site.title));
-    if (B.name && site.nameArt) $("bioName").appendChild(el("small", "bio-full", B.name));
+    // الاسم الكامل بخط صغير تحت الخط المميز: أُلغي بطلب الدكتور (تكرار)
     if (B.rank) $("bioRank").textContent = B.rank; else $("bioRank").remove();
     if (B.cvPage) requestAnimationFrame(() => { const a = el("a", "bio-cv-btn", "السيرة الذاتية كاملة ←"); a.href = B.cvPage; document.querySelector(".bio-data").appendChild(a); });
     // نسخ السيرة الذاتية (site.bio.cv): بطاقات صغيرة لكل نسخة تفتح في القارئ
