@@ -10,7 +10,7 @@
 <script>try{var _t=localStorage.getItem("lib-theme:"+location.pathname.replace(/[^/]*$/,""));if(_t){var _s=document.getElementById("lib-theme")||document.createElement("style");_s.id="lib-theme";_s.textContent=_t;if(!_s.parentNode)document.head.appendChild(_s)}}catch(e){}</script>
 
 <link rel="stylesheet" href="assets/style.css?v=46">
-<link rel="stylesheet" href="assets/cv.css?v=3">
+<link rel="stylesheet" href="assets/cv.css?v=4">
 <!-- PWA:START (يُولَّد تلقائياً: python3 tools/pwa.py) -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -81,7 +81,7 @@ const svg = (k) => '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none
 function list(items, timeline, head) {
   if (items.length && Array.isArray(items[0])) { // جدول (رؤوس الأعمدة من head)
     const w = el("div", "cv-tbl"); const t = el("table"); const th = el("thead"), hr = el("tr"); ["م", ...(head || ["اسم الدورة", "مكانها", "مدتها"])].forEach((x) => hr.appendChild(el("th", "", x))); th.appendChild(hr); t.appendChild(th);
-    const H = ["م", ...(head || ["اسم الدورة", "مكانها", "مدتها"])]; const tb = el("tbody"); items.forEach((r, i) => { const tr = el("tr"); [ar(i + 1), ...r].forEach((c, k) => { const td = el("td", "", c); td.dataset.l = H[k] || ""; if (k && !c) td.classList.add("empty"); tr.appendChild(td); }); tb.appendChild(tr); }); t.appendChild(tb); w.appendChild(t); return w; }
+    const H = ["م", ...(head || ["اسم الدورة", "مكانها", "مدتها"])]; const tb = el("tbody"); items.forEach((r, i) => { const tr = el("tr"); [ar(i + 1), ...r].forEach((c, k) => { const td = el("td", "", c); td.dataset.l = H[k] || ""; if (k > 1 && c.length <= 48) td.classList.add("nw"); if (k && !c) td.classList.add("empty"); tr.appendChild(td); }); tb.appendChild(tr); }); t.appendChild(tb); w.appendChild(t); return w; }
   const ul = el("ul", timeline ? "cv-tl" : "cv-ul"); items.forEach((x) => ul.appendChild(el("li", "", x))); return ul;
 }
 const panes = $("panes");
