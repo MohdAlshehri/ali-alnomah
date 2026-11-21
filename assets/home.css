@@ -510,7 +510,7 @@
 .g-empty span{font-size:15px;color:var(--muted)}
 
 /* صفحة التصنيف: تُخفى أقسام الرئيسية ويظهر رأس التصنيف فوق شبكة الأغلفة */
-.cat-view .hero,.cat-view #stats,.cat-view #soon,.cat-view #colls,.cat-view #cont,.cat-view #top,.cat-view #library>.wrap>.sec-head,.cat-view #resLine{display:none!important}
+.cat-view #stats,.cat-view #soon,.cat-view #colls,.cat-view #cont,.cat-view #top,.cat-view #library>.wrap>.sec-head,.cat-view #resLine{display:none!important}
 .cat-view #library{padding-top:26px}
 .cat-head[hidden]{display:none}
 .cat-head{margin:0 0 22px;padding:28px 30px 26px;border-radius:24px;background:linear-gradient(150deg,var(--t-primary-l),var(--t-primary) 50%,var(--t-primary-d));color:#fff;position:relative;overflow:hidden;isolation:isolate;box-shadow:0 26px 44px -34px rgb(var(--t-primary-dd-rgb) / 1)}
@@ -677,3 +677,5 @@ a.bio-it:hover .bio-go{transform:translateX(-4px)}
 .bio-cvv small{font-size:11.5px;opacity:.8;line-height:1.4}
 .bio-rank{max-width:360px;line-height:1.75;border-radius:16px;padding:6px 16px 8px;text-align:center}
 .in-grp #bio,.cat-view #bio{display:none!important}
+/* القسم الافتتاحي يبقى ظاهراً داخل المجموعات على الكمبيوتر، ويختفي في الجوال */
+@media (max-width:760px){.cat-view .hero{display:none!important}}
