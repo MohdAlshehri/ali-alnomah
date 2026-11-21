@@ -678,4 +678,4 @@ a.bio-it:hover .bio-go{transform:translateX(-4px)}
 .bio-rank{max-width:360px;line-height:1.75;border-radius:16px;padding:6px 16px 8px;text-align:center}
 .in-grp #bio,.cat-view #bio{display:none!important}
 /* القسم الافتتاحي يبقى ظاهراً داخل المجموعات على الكمبيوتر، ويختفي في الجوال */
-@media (max-width:760px){.cat-view .hero{display:none!important}}
+@media (max-width:760px){.cat-view .hero,.in-grp .hero{display:none!important}}
