@@ -697,9 +697,9 @@
         setCat(val);
       }
       if (mode === "keep") return;
-      if (s_.c) { window.scrollTo({ top: 0, behavior: "auto" }); return; }
+      if (s_.c) { window.scrollTo({ top: Math.max(0, topOf($("library"))), behavior: "auto" }); return; } // ننزل لعنوان المجموعة/التصنيف وكتبه مباشرة، لا لأعلى الصفحة
       if (mode === "lib") goLib();
-      else if (mode === "colls" && topOf(sec) < scrollY - 4) window.scrollTo({ top: topOf(sec), behavior: smooth() });
+      else if (mode === "colls") { const r_ = sec.getBoundingClientRect().top - $("topbar").offsetHeight; if (r_ < -4 || r_ > innerHeight * 0.35) window.scrollTo({ top: topOf(sec), behavior: "auto" }); } // الرجوع للمجموعات: نعرض قسم المجموعات نفسه
     }
     window.addEventListener("popstate", () => apply("none"));
     // نحفظ مكان القارئ في المكتبة عند فتح كتاب، ونرجعه له عند الضغط على زر المكتبة في القارئ — v44
