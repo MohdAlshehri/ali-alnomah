@@ -679,3 +679,6 @@ a.bio-it:hover .bio-go{transform:translateX(-4px)}
 .in-grp #bio,.cat-view #bio{display:none!important}
 /* القسم الافتتاحي يبقى ظاهراً داخل المجموعات على الكمبيوتر، ويختفي في الجوال */
 @media (max-width:760px){.cat-view .hero,.in-grp .hero{display:none!important}}
+
+/* تصنيف بلا كتب في شريط التصنيفات: باهت ليعرف القارئ أنه فارغ */
+.chip.chip-empty:not(.on){opacity:.5}
