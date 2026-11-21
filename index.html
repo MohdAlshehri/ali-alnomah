@@ -575,7 +575,7 @@
         const go = el("span", "grp-go"); go.innerHTML = "<span>تصفّح</span>" + arrow; ft.appendChild(go);
         b.append(el("span", "grp-pat"), ic, body, ft);
         b.setAttribute("aria-label", g.name + " — " + (bk.length ? bk.length + " " + plural(bk.length, "book") : "لا توجد كتب مضافة حالياً") + "، " + g.cats.length + " " + plural(g.cats.length, "cat"));
-        b.onclick = () => nav(g.name, isDirect(g) ? g.name : "*", "lib"); // المجموعة تفتح على كتبها مباشرة وشريط تصنيفاتها فوقها (بلا مربعات مكررة)
+        b.onclick = () => isDirect(g) ? nav(g.name, g.name, "lib") : nav(g.name, "", "colls");
         list.appendChild(b);
       });
       const ex = el("div", "grp-extra");
@@ -626,7 +626,7 @@
       [navEl, subNav].forEach((n_) => { const on_ = n_.querySelector(".chip.on"); if (on_ && !n_.hidden) n_.scrollTo({ left: on_.offsetLeft - (n_.clientWidth - on_.offsetWidth) / 2 }); });
     };
     // التذييل: المجموعات
-    GROUPS.forEach((g) => { const li = el("li"); const a = el("a", "", g.name); a.href = "#g/" + encodeURIComponent(g.name); a.onclick = (e) => { e.preventDefault(); nav(g.name, isDirect(g) ? g.name : "*", "lib"); }; li.appendChild(a); $("fCats").appendChild(li); });
+    GROUPS.forEach((g) => { const li = el("li"); const a = el("a", "", g.name); a.href = "#g/" + encodeURIComponent(g.name); a.onclick = (e) => { e.preventDefault(); isDirect(g) ? nav(g.name, g.name, "lib") : nav(g.name, "", "colls"); }; li.appendChild(a); $("fCats").appendChild(li); });
 
     // ===== صفحة التصنيف: عنوان ووصف وعدد وبحث داخل التصنيف، ثم شبكة الأغلفة =====
     const lib = $("library"), ch = el("div", "cat-head"); ch.id = "catHead"; ch.hidden = true; lib.querySelector(".wrap").prepend(ch);
@@ -638,7 +638,7 @@
       const cr = el("nav", "cat-crumb"); cr.setAttribute("aria-label", "مسار التصفح");
       const lk = (t, fn) => { const b = el("button", "", t); b.type = "button"; b.onclick = fn; return b; };
       cr.append(lk("المجموعات", () => nav("", "", "colls")), el("span", "gsep", "‹"));
-      if (all || direct) cr.appendChild(el("b", "", g)); else { cr.append(lk(g, () => nav(g, "*", "lib")), el("span", "gsep", "‹")); if (secOf(c)) cr.append(el("span", "cat-sec", secOf(c)), el("span", "gsep", "‹")); cr.appendChild(el("b", "", lbT(c))); }
+      if (all || direct) cr.appendChild(el("b", "", g)); else { cr.append(lk(g, () => nav(g, "", "colls")), el("span", "gsep", "‹")); if (secOf(c)) cr.append(el("span", "cat-sec", secOf(c)), el("span", "gsep", "‹")); cr.appendChild(el("b", "", lbT(c))); }
       const top = el("div", "cat-top"); const ic = el("span", "cat-ic"); ic.innerHTML = all || direct ? icG(G_) : icC(c);
       const tx = el("div", "cat-tx"); if (subLine) tx.appendChild(el("span", "cat-of", subLine)); tx.appendChild(el("h1", "", all ? title : lbT(c))); if (desc) tx.appendChild(el("p", "cat-desc", desc));
       const mt = el("div", "cat-meta"); mt.id = "catMeta"; tx.appendChild(mt); top.append(ic, tx);
@@ -692,8 +692,6 @@
     }
     function apply(mode) {
       const s_ = parse(); if (!s_) return; // روابط داخلية أخرى (#library…)
-      // رابط مجموعة بلا تصنيف (روابط قديمة أو زر الرجوع): يُفتح على كل كتب المجموعة بدل مربعات التصنيفات
-      { const G0 = s_.g && !s_.c && GROUPS.find((x) => x.name === s_.g); if (G0) { s_.c = isDirect(G0) ? G0.name : "*"; history.replaceState(null, "", hashOf(s_.g, s_.c)); } }
       const was = viewG;
       // قسم السيرة يظهر في الرئيسية فقط، ويختفي عند الدخول في مجموعة أو تصنيف
       document.body.classList.toggle("in-grp", !!(s_.g && GROUPS.some((x) => x.name === s_.g)));
